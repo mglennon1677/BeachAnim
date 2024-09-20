@@ -71,6 +71,10 @@
             graphics.restore();
         }
 
+        {
+            drawSun(); // Call the draw function
+            requestAnimationFrame(drawSun); // Continue animation
+        } 
     }
 
     function drawBackground() {
@@ -89,6 +93,23 @@
         graphics.fill(ground);
         graphics.fillStyle = 'rgb(0, 0, 255)'; 
         graphics.fill(water);
+    }
+
+    function drawSun() {
+        graphics.fillStyle = 'rgba(255, 255, 0, 0.2)'; 
+
+        let radial = Math.sin(frameNumber * 0.04); 
+
+        for (let i = 0; i < 5; i++) {
+            let x = 7 + (0.2) - (0.04 * radial);
+            let y = 11 + (0.2) - (0.04 * radial);
+            let width = 4 - (i * 0.4) + (0.08 * radial);
+            let height = 4 - (i * 0.4) + (0.08 * radial);
+        
+            graphics.beginPath();
+            graphics.ellipse(x, y, width / 2, height / 2, 0, 0, 2 * Math.PI);
+            graphics.fill();
+        }
     }
 
         /**
