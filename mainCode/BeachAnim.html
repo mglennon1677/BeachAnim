@@ -63,7 +63,6 @@
             water.moveTo(-2.0, 8.0);
             water.bezierCurveTo(3.5, 3.5, 4.0, 5.0, 6.0, 8.0);
             water.closePath();
-
             graphics.fillStyle = 'rgb(7, 168, 26)';
             graphics.fill(ground);
             graphics.fillStyle = 'rgb(0, 0, 255)'; 
@@ -71,6 +70,17 @@
             graphics.restore();
         }
 
+        //dead guy on blanket
+        {
+            graphics.save();
+            let blanket = new Path2D;
+            blanket.rect(4.0, 4.0, 2.0,2.0)
+            blanket.closePath();
+
+            graphics.fillStyle = 'rgb(216, 184, 152)';
+            graphics.fill(blanket);
+            graphics.restore();
+        }
     }
 
     function drawBackground() {
