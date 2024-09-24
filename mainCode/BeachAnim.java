@@ -11,7 +11,7 @@
   * consisting of a still images for background, the sky, a picnic scene, and trees, as well as
   * animation for the sun, a bezier-curve bird, and even a functioning seesaw!
   *
-  * Additions for extra credit are as such: The person in the blanket rolls over when the space bar is pressed
+  * Additions for extra credit are as such: The person on the blanket rolls over when the space bar is pressed
   * 
   * This class illustrates transformations on a scene using Java's
   * Graphics2D class
