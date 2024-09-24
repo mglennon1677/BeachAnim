@@ -58,6 +58,22 @@
 
       }
 
+      private int frameNumber;  // A counter that increases by one in each frame.
+      private long elapsedTimeMillis;  // The time, in milliseconds, since the animation started.
+     
+      private float pixelSize;  // This is the measure of a pixel in the coordinate system using applyLimits()
+                                
+      
+      /**
+       * This constructor sets up a Beach animation of a given size
+       */
+      public BeachAnim() {
+
+          setPreferredSize(new Dimension(1000,1000) ); // Set size of drawing area, in pixels.
+          addKeyListener( new org.yourcompany.yourproject.BeachAnim.KeyHandler() );  // install an object to listen for key events.
+
+      }
+
      /**
       * This class defines the object that listens for key events.
       */
@@ -78,22 +94,6 @@
 
          }
      }
-
-      private int frameNumber;  // A counter that increases by one in each frame.
-      private long elapsedTimeMillis;  // The time, in milliseconds, since the animation started.
-     
-      private float pixelSize;  // This is the measure of a pixel in the coordinate system using applyLimits()
-                                
-      
-      /**
-       * This constructor sets up a Beach animation of a given size
-       */
-      public BeachAnim() {
-
-          setPreferredSize(new Dimension(1000,1000) ); // Set size of drawing area, in pixels.
-          addKeyListener( new org.yourcompany.yourproject.BeachAnim.KeyHandler() );  // install an object to listen for key events.
-
-      }
       
       //The paintComponent method draws the content of the JPanel using graphics component g
       protected void paintComponent(Graphics g) {
@@ -126,23 +126,26 @@
   
       //Method which draws each component
       private void drawMainScene(Graphics2D g2) {
+
+          AffineTransform savedTransform = g2.getTransform();
+
           drawBackground(g2);
           drawSun(g2);
 
           g2.translate(1,-2); //Place in position
           drawAnimatedPicnic(g2, initialFrameRate);
-          g2.setTransform(cs);  //Reset transform
+          g2.setTransform(savedTransform);  //Reset transform
 
           g2.scale( 0.65,0.65); //shrink trees
           g2.translate(9, -1.5); //Place tree 1
           drawTree(g2);
           g2.translate(-18, 0); //Place tree 2
           drawTree(g2);
-          g2.setTransform(cs); //Reset transform
+          g2.setTransform(savedTransform); //Reset transform
 
           g2.translate(-2.5,-3.4); //Place in position
           drawPeopleOnSeesaw(g2);
-          g2.setTransform(cs); //Reset transform
+          g2.setTransform(savedTransform); //Reset transform
       }
   
       
