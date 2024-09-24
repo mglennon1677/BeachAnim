@@ -118,11 +118,15 @@
             graphics.save();
             let head = new Path2D();
             let torso = new Path2D();
+            let hand = new Path2D();
 
             head.arc(5.93, 5.5, 0.2, 0, 2 * Math.PI);
 
-            torso.moveTo(5.75, 5.4);
-            torso.lineTo(5.3, 5.05);
+            torso.moveTo(5.77, 5.35); //near head
+            torso.lineTo(5.3, 5.05); //away from head
+
+            hand.moveTo(5.68, 5.3); //on torso
+            hand.lineTo(5.3, 5.27); //off torso
             
             //coloring the head
             graphics.strokeStyle = 'rgb(0, 0, 0)';
@@ -134,6 +138,9 @@
             //coloring torso
             graphics.lineWidth = 0.04;
             graphics.stroke(torso);
+
+            //coloring hand
+            graphics.stroke(hand);
 
             graphics.restore();
         }
