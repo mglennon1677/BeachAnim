@@ -70,9 +70,8 @@
             graphics.restore();
         }
 
-        //dead guy on blanket
+        //blanket items
         {
-            //blanket scene
             graphics.save();
             let blanket = new Path2D;
             let ball = new Path2D;
@@ -110,6 +109,21 @@
             graphics.strokeStyle = 'rgb(65,60,50)'
             graphics.lineWidth = 0.08
             graphics.stroke(briefcaseHandle)
+
+            graphics.restore();
+        }
+
+        //guy on blanket
+        {
+            graphics.save();
+            let head = new Path2D();
+            head.arc(5.93, 5.5, 0.2, 0, 2 * Math.PI);
+
+            graphics.strokeStyle = 'rgb(0, 0, 0)'
+            graphics.lineWidth = 0.08
+            graphics.stroke(head);
+            graphics.fillStyle = 'rgb(255, 255, 255)';
+            graphics.fill(head);
 
             graphics.restore();
         }
