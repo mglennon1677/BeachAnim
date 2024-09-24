@@ -72,17 +72,25 @@
 
         //dead guy on blanket
         {
+            //blanket scene
             graphics.save();
             let blanket = new Path2D;
-            //blanket.rect(4.0, 4.0, 2.0,2.0)
+            let ball = new Path2D;
             blanket.moveTo(3.5, 4.5);
             blanket.lineTo(5.5, 4.5);
             blanket.lineTo(7.5, 6.0);
             blanket.lineTo(5.5, 6.0)
             blanket.closePath();
-
+            ball.arc(5.4 ,5.6, 0.05, 0, 2 * Math.PI)
+            ball.closePath();
+            
+            //blanket coloring 
             graphics.fillStyle = 'rgb(216, 184, 152)';
             graphics.fill(blanket);
+
+            //ball coloring
+            graphics.fillStyle = 'rgb(255, 0, 0)';
+            graphics.fill(ball);
             graphics.restore();
         }
     }
