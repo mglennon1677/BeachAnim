@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
- package org.yourcompany.yourproject;
- /********************
+
+ /*
   * BeachAnimation
   * Authors: 
   * Fall 24: CSC345/CSC645
@@ -15,13 +12,18 @@
   * 
   * This class illustrates transformations on a scene using Java's
   * Graphics2D class
-  ********************/
- import java.awt.*;        // import statements to make necessary classes available
- import java.awt.event.*;
- import java.awt.geom.*;
- 
- import javax.swing.*;
- import java.lang.Math;
+  */
+ import java.awt.*;
+ import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Path2D;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
   
  public class BeachAnim extends JPanel {
       /**
@@ -31,7 +33,7 @@
       public static void main(String[] args) {
         
             JFrame window;
-            window = new JFrame("Java Animation");  // The parameter shows in the window title bar.
+            window = new JFrame("Picnic Scene: Animations in disguise");  // The parameter shows in the window title bar.
             final BeachAnim panel = new BeachAnim(); // The drawing area.
             window.setContentPane( panel ); // Show the panel in the window.
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // End program when window closes.
@@ -100,6 +102,20 @@
       private void drawMainScene(Graphics2D g2) {
           drawBackground(g2);
           drawSun(g2);
+          g2.translate(-6.5,2);
+          g2.translate(13,0);
+          g2.translate(-6.5,-2);
+
+          //Draw a bunch of birds
+          drawBird(g2);
+          g2.translate(.5,-.2);
+          drawBird(g2);
+          g2.translate(.5,-.2);
+          drawBird(g2);
+          g2.translate(-.375,.5);
+          drawBird(g2);
+          g2.translate(.5,.2);
+          drawBird(g2);
       }
   
       
@@ -124,7 +140,7 @@
         g2.fill(water);
     }
 
-    //Method to draw a sun which lightly pulstates.  Uses frame number to handle changes for the animation.
+    //Method to draw a sun which lightly pulsates.  Uses frame number to handle changes for the animation.
     private void drawSun(Graphics2D g2){
         
         g2.setPaint(new Color(255,255,0,51));
@@ -133,6 +149,28 @@
             g2.fill(new Ellipse2D.Double(3 + (i*.2) - (.04 * radial),5 + (i*.2) - (.04 * radial),5 - (i*.4) + (.08 * radial),5 - (i*.4) + (.08 * radial)));
         }
     }
+
+     //Method to draw a bird which both flaps and moves across the screen, using two Bezier curves
+     private void drawBird(Graphics2D g2)
+     {
+          double midX = (double)-frameNumber/100;
+          double midY = 5;
+          double radial =.10 + (.05 * Math.sin(frameNumber *.08));
+          CubicCurve2D birdL = new CubicCurve2D.Double();
+          birdL.setCurve(midX - .2, midY + (radial/2), midX - .2, midY + radial, midX,midY +radial , midX, midY);
+          CubicCurve2D birdR = new CubicCurve2D.Double();
+          birdR.setCurve(midX, midY, midX, midY + radial, midX + .2, midY + radial, midX + .2, midY + (radial/2));
+
+
+
+          g2.setColor(new Color(0,0,0));
+          g2.setStroke(new BasicStroke(.02F));
+          g2.draw(birdL);
+          g2.draw(birdR);
+     }
+
+
+     
       /**
        * Method changes the pixelsize of the animation to match the viewport size, effectively proportioning our resulting animation
        */
