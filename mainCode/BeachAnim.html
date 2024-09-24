@@ -76,13 +76,19 @@
             graphics.save();
             let blanket = new Path2D;
             let ball = new Path2D;
+            let briefcaseBase = new Path2D;
+
             blanket.moveTo(3.5, 4.5);
             blanket.lineTo(5.5, 4.5);
             blanket.lineTo(7.5, 6.0);
             blanket.lineTo(5.5, 6.0)
             blanket.closePath();
+
             ball.arc(5.4 ,5.6, 0.05, 0, 2 * Math.PI)
             ball.closePath();
+
+            briefcaseBase.rect(6.3, 5.8, 0.7, 0.4);
+            briefcaseBase.closePath();
             
             //blanket coloring 
             graphics.fillStyle = 'rgb(216, 184, 152)';
@@ -91,6 +97,10 @@
             //ball coloring
             graphics.fillStyle = 'rgb(255, 0, 0)';
             graphics.fill(ball);
+
+            //briefcase base coloring
+            graphics.fillStyle = 'rgb(65,60,50)';
+            graphics.fill(briefcaseBase);
             graphics.restore();
         }
     }
