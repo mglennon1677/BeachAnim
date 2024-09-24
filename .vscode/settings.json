@@ -1,4 +1,5 @@
 {
     "terminal.integrated.cwd": "\\Users\\matth\\CompGraphicsAssignment1\\mainCode\\",
-    "jdk.runConfig.cwd": "\\Users\\matth\\CompGraphicsAssignment1\\mainCode"
+    "jdk.runConfig.cwd": "\\Users\\matth\\CompGraphicsAssignment1\\mainCode",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
