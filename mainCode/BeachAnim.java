@@ -4,14 +4,14 @@
 package org.yourcompany.yourproject;
 /********************
  * BeachAnimation
- * Authors:
+ * Authors: Matthew Glennon, Shmuel Feld
  * Fall 24: CSC345/CSC645
  *
  * This file is our first assignment for Computer Graphics, where we create a simple beach animation
  * consisting of a still images for background, the sky, a picnic scene, and trees, as well as
  * animation for the sun, a bezier-curve bird, and even a functioning seesaw!
  *
- * Additions for extra credit are as such:
+ * Additions for extra credit are as such: The person on the blanket rolls over when the space bar is pressed
  *
  * This class illustrates transformations on a scene using Java's
  * Graphics2D class
@@ -24,6 +24,7 @@ import javax.swing.*;
 import java.lang.Math;
 
 public class BeachAnim extends JPanel {
+    static double initialFrameRate = -1; //Used to control picnic roll-over animation. If set to -1 animation is off
     /**
      * This main() routine makes it possible to display each frame within this animation
      * within a JFrame window, using a Timer object to drive the animation over repeated time intervals.
@@ -32,7 +33,7 @@ public class BeachAnim extends JPanel {
 
         JFrame window;
         window = new JFrame("Java Animation");  // The parameter shows in the window title bar.
-        final BeachAnim panel = new BeachAnim(); // The drawing area.
+        final org.yourcompany.yourproject.BeachAnim panel = new org.yourcompany.yourproject.BeachAnim(); // The drawing area.
         window.setContentPane( panel ); // Show the panel in the window.
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // End program when window closes.
         window.pack();  // Set window size based on the preferred sizes of its contents.
@@ -53,7 +54,10 @@ public class BeachAnim extends JPanel {
         window.setVisible(true); // Open the window, making it visible on the screen.
         animationTimer.start();  // Start the animation running.
 
+        panel.requestFocusInWindow();  // make sure key events go to the panel.
+
     }
+
     private int frameNumber;  // A counter that increases by one in each frame.
     private long elapsedTimeMillis;  // The time, in milliseconds, since the animation started.
 
@@ -64,7 +68,31 @@ public class BeachAnim extends JPanel {
      * This constructor sets up a Beach animation of a given size
      */
     public BeachAnim() {
+
         setPreferredSize(new Dimension(1000,1000) ); // Set size of drawing area, in pixels.
+        addKeyListener( new org.yourcompany.yourproject.BeachAnim.KeyHandler() );  // install an object to listen for key events.
+
+    }
+
+    /**
+     * This class defines the object that listens for key events.
+     */
+    private class KeyHandler extends KeyAdapter {
+
+        public void keyPressed(KeyEvent evt) {
+            // This method is called every time a key is pressed.
+            // The key is encoded as evt.getKeyCode(), which is
+            // a constant such as KeyEvent.VK_LEFT for the left arrow
+            // key, KeyEvent.VK_A for the "A" key, and so on.
+            int key = evt.getKeyCode();
+
+
+            if (key == KeyEvent.VK_SPACE) {
+                initialFrameRate = frameNumber;
+                repaint();
+            }
+
+        }
     }
 
     //The paintComponent method draws the content of the JPanel using graphics component g
@@ -98,28 +126,43 @@ public class BeachAnim extends JPanel {
 
     //Method which draws each component
     private void drawMainScene(Graphics2D g2) {
-        AffineTransform cs = g2.getTransform(); // Save current "coordinate system" transform
+
+        AffineTransform savedTransform = g2.getTransform();
 
         drawBackground(g2);
         drawSun(g2);
 
+        g2.translate(-6.5,2); //Place in position
+        g2.translate(13,0);
+        g2.translate(-6.5,-2);
+
+        //Draw a bunch of birds
+        drawBird(g2);
+        g2.translate(.5,-.2);
+        drawBird(g2);
+        g2.translate(.5,-.2);
+        drawBird(g2);
+        g2.translate(-.375,.5);
+        drawBird(g2);
+        g2.translate(.5,.2);
+        drawBird(g2);
+
+        g2.setTransform(savedTransform); //Reset transform
+
         g2.translate(1,-2); //Place in position
-        drawPicnic(g2);
-        g2.setTransform(cs);  //Reset transform
+        drawAnimatedPicnic(g2, initialFrameRate);
+        g2.setTransform(savedTransform);  //Reset transform
 
         g2.scale( 0.65,0.65); //shrink trees
         g2.translate(9, -1.5); //Place tree 1
         drawTree(g2);
         g2.translate(-18, 0); //Place tree 2
         drawTree(g2);
-        g2.setTransform(cs); //Reset transform
+        g2.setTransform(savedTransform); //Reset transform
 
         g2.translate(-2.5,-3.4); //Place in position
         drawPeopleOnSeesaw(g2);
-        g2.setTransform(cs); //Reset transform
-
-
-
+        g2.setTransform(savedTransform); //Reset transform
 
     }
 
@@ -145,7 +188,7 @@ public class BeachAnim extends JPanel {
         g2.fill(water);
     }
 
-    //Method to draw a sun which lightly pulstates.  Uses frame number to handle changes for the animation.
+    //Method to draw a sun which lightly pulstates. Uses frame number to handle changes for the animation.
     private void drawSun(Graphics2D g2){
 
         g2.setPaint(new Color(255,255,0,51));
@@ -155,41 +198,23 @@ public class BeachAnim extends JPanel {
         }
     }
 
-    //Method to draw a person, briefcase, and ball on a blanket
-    private void drawPicnic(Graphics2D g2){
-        AffineTransform savedTransform = g2.getTransform();
-
-        //draw blanket
-        g2.shear(1,0);
-        g2.setPaint(new Color(216, 184, 152) ); // beige
-        g2.fill(new Rectangle2D.Double(0,0,2,2));
-
-        g2.setTransform(savedTransform); //un-shear
-
-        //draw ball
-        g2.setPaint(Color.red);
-        g2.fill( new Ellipse2D.Double(1.8, 1.5, 0.1, 0.1) ); // lower left X, lower left Y, width, height
+    //Method to draw a bird which both flaps and moves across the screen, using two Bezier curves
+    private void drawBird(Graphics2D g2)
+    {
+        double midX = (double)-frameNumber/100;
+        double midY = 5;
+        double radial =.10 + (.05 * Math.sin(frameNumber *.08));
+        CubicCurve2D birdL = new CubicCurve2D.Double();
+        birdL.setCurve(midX - .2, midY + (radial/2), midX - .2, midY + radial, midX,midY +radial , midX, midY);
+        CubicCurve2D birdR = new CubicCurve2D.Double();
+        birdR.setCurve(midX, midY, midX, midY + radial, midX + .2, midY + radial, midX + .2, midY + (radial/2));
 
 
-        //draw briefcase
-        g2.setPaint(new Color(65,60,50)); //grey-brown
-        g2.fill(new Rectangle2D.Double(2.9,1.7,0.66,0.5));
-        g2.setStroke( new BasicStroke(2*pixelSize) );
-        g2.translate(2.99,2.4);
-        g2.scale(1,-1);
-        g2.translate(-3,-2);
-        g2.draw(new Arc2D.Double(3,2,0.5,0.5,0,180, Arc2D.CHORD));
 
-        g2.setTransform(savedTransform);
-
-        //draw person
-        g2.translate(1.9,0.9);
-        g2.scale(0.5,0.5);
-        g2.rotate(-Math.PI/3.5);
-        drawPerson(g2, -Math.PI/3, false);
-
-        g2.setTransform(savedTransform);
-
+        g2.setColor(new Color(0,0,0));
+        g2.setStroke(new BasicStroke(.02F));
+        g2.draw(birdL);
+        g2.draw(birdR);
     }
 
     //Method to draw a tree
@@ -221,19 +246,19 @@ public class BeachAnim extends JPanel {
 
         AffineTransform savedTransform = g2.getTransform();
 
-        double d = frameNumber*0.3;
+        double slowedFrameNumber = frameNumber*0.1;
 
-        drawSeesaw(g2, (Math.sin(d)/3));
+        drawSeesaw(g2, (Math.sin(slowedFrameNumber)/3));
 
         g2.translate(-2,1); //starting location of left person
-        g2.translate(0, -Math.sin(d)/1.5); //height of left person
-        drawPerson(g2, (Math.sin(d)/2)-7.2, true);
+        g2.translate(0, -Math.sin(slowedFrameNumber)/1.5); //height of left person
+        drawPerson(g2, (Math.sin(slowedFrameNumber)/2)-7.2, true);
 
         g2.setTransform(savedTransform);
 
         g2.translate(2,1); //starting location of right person
-        g2.translate(0, Math.sin(d)/1.5); //height of right person
-        drawPerson(g2, -(Math.sin(d)/2)-7.2, false);
+        g2.translate(0, Math.sin(slowedFrameNumber)/1.5); //height of right person
+        drawPerson(g2, -(Math.sin(slowedFrameNumber)/2)-7.2, false);
 
         g2.setTransform(savedTransform);
 
@@ -272,7 +297,7 @@ public class BeachAnim extends JPanel {
         AffineTransform savedTransform = g2.getTransform();
 
         if (!facingRight){
-            g2.scale(-1,1); //filp the entire drawing horizontally
+            g2.scale(-1,1); //flip the entire drawing horizontally
         }
 
         //Draw head
@@ -303,6 +328,63 @@ public class BeachAnim extends JPanel {
 
         g2.setTransform(savedTransform);
 
+    }
+
+    //Method to draw a person, briefcase, and ball on a blanket
+    //If not animated, parameters should be: flipAmount: 1, rotateAmount: 0, kneeAngle: -Math.PI/3
+    private void drawPicnic(Graphics2D g2, double flipAmount, double rotateAmount, double kneeAngle){
+
+        AffineTransform savedTransform = g2.getTransform();
+
+        //draw blanket
+        g2.shear(1,0);
+        g2.setPaint(new Color(216, 184, 152) ); // beige
+        g2.fill(new Rectangle2D.Double(0,0,2,2));
+
+        g2.setTransform(savedTransform); //un-shear
+
+        //draw ball
+        g2.setPaint(Color.red);
+        g2.fill( new Ellipse2D.Double(1.8, 1.5, 0.1, 0.1) ); // lower left X, lower left Y, width, height
+
+
+        //draw briefcase
+        g2.setPaint(new Color(65,60,50)); //grey-brown
+        g2.fill(new Rectangle2D.Double(2.9,1.7,0.66,0.5));
+        g2.setStroke( new BasicStroke(2*pixelSize) );
+        g2.translate(2.99,2.4);
+        g2.scale(1,-1);
+        g2.translate(-3,-2);
+        g2.draw(new Arc2D.Double(3,2,0.5,0.5,0,180, Arc2D.CHORD));
+
+        g2.setTransform(savedTransform);
+
+        //draw person
+        g2.translate(1.9,0.9);
+        g2.scale(0.5,0.5);
+        g2.rotate(-Math.PI/3.5, 0, 0);
+
+        g2.scale(flipAmount, 1);
+        g2.rotate(rotateAmount, 0, 0);
+
+        drawPerson(g2, kneeAngle, false);
+
+        g2.setTransform(savedTransform);
+
+    }
+
+    //Extra Credit
+    private void drawAnimatedPicnic(Graphics2D g2, double initialFrameNumber){
+
+        double relativeFrameNumber = frameNumber - initialFrameNumber;
+        double slowedFrameNumber = relativeFrameNumber * 0.05;
+        double seconds = relativeFrameNumber/60.0;
+
+        if (initialFrameNumber != -1 && seconds < 2.2) {
+            drawPicnic(g2, Math.sin(slowedFrameNumber+1), 0.15*Math.sin(slowedFrameNumber)-0.15, (0.5*Math.sin(1.5*slowedFrameNumber-3)-7.4));
+        } else {
+            drawPicnic(g2, 1, 0, -Math.PI/3); //not animated
+        }
     }
 
     /**
