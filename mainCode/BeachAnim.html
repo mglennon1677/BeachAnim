@@ -70,7 +70,7 @@
             graphics.restore();
         }
 
-        //blanket items
+        //blanket and items
         {
             graphics.save();
             let blanket = new Path2D;
@@ -78,10 +78,10 @@
             let briefcaseBase = new Path2D;
             let briefcaseHandle = new Path2D;
 
-            blanket.moveTo(3.5, 4.5);
-            blanket.lineTo(5.5, 4.5);
-            blanket.lineTo(7.5, 6.0);
-            blanket.lineTo(5.5, 6.0)
+            blanket.moveTo(3.5, 4.5); //bottom left corner
+            blanket.lineTo(5.5, 4.5); //bottom right corner
+            blanket.lineTo(7.5, 6.0); //upper right corner
+            blanket.lineTo(5.5, 6.0) //upper left corner
             blanket.closePath();
 
             ball.arc(5.4 ,5.6, 0.05, 0, 2 * Math.PI);
@@ -91,7 +91,7 @@
             briefcaseBase.closePath();
 
             briefcaseHandle.moveTo(6.35, 6);
-            briefcaseHandle.quadraticCurveTo(6.65, 6.75, 6.9, 6.0)
+            briefcaseHandle.quadraticCurveTo(6.65, 6.75, 6.9, 6.0);
 
             //blanket coloring 
             graphics.fillStyle = 'rgb(216, 184, 152)';
@@ -106,9 +106,9 @@
             graphics.fill(briefcaseBase);
 
             //briefcase handle
-            graphics.strokeStyle = 'rgb(65,60,50)'
-            graphics.lineWidth = 0.08
-            graphics.stroke(briefcaseHandle)
+            graphics.strokeStyle = 'rgb(65,60,50)';
+            graphics.lineWidth = 0.08;
+            graphics.stroke(briefcaseHandle);
 
             graphics.restore();
         }
@@ -117,13 +117,23 @@
         {
             graphics.save();
             let head = new Path2D();
+            let torso = new Path2D();
+
             head.arc(5.93, 5.5, 0.2, 0, 2 * Math.PI);
 
-            graphics.strokeStyle = 'rgb(0, 0, 0)'
-            graphics.lineWidth = 0.08
+            torso.moveTo(5.75, 5.4);
+            torso.lineTo(5.3, 5.05);
+            
+            //coloring the head
+            graphics.strokeStyle = 'rgb(0, 0, 0)';
+            graphics.lineWidth = 0.08;
             graphics.stroke(head);
             graphics.fillStyle = 'rgb(255, 255, 255)';
             graphics.fill(head);
+
+            //coloring torso
+            graphics.lineWidth = 0.04;
+            graphics.stroke(torso);
 
             graphics.restore();
         }
