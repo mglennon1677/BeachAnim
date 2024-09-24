@@ -1,5 +1,5 @@
 
- /********************
+ /*
   * BeachAnimation
   * Authors: 
   * Fall 24: CSC345/CSC645
@@ -12,7 +12,7 @@
   * 
   * This class illustrates transformations on a scene using Java's
   * Graphics2D class
-  ********************/
+  */
  import java.awt.*;
  import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -170,25 +170,7 @@ import javax.swing.Timer;
      }
 
 
-     /*Method which draws a tree using a Graphics2D object! Tree consists of one path using both curves and straight lines, as well as a green circle for the leaves.
-    private void drawTree(Graphics2D g2){
-          Path2D trunk = new Path2D.Double();
-          trunk.moveTo(-.75, 0);
-          trunk.curveTo(-.75,0,-1.0, -4, -2.25,-5);
-          trunk.lineTo(-.5,-4.75);
-          trunk.lineTo(.25, -5.25);
-          trunk.lineTo(.75, -4.5);
-          trunk.lineTo(2.25,-5);
-          trunk.curveTo(2.25,-5,1.0,-4, .75,0);
-          trunk.closePath();
-          g2.setPaint(new Color(53,33,0));
-          g2.fill(trunk);
-          g2.setPaint(new Color(0,100,0));
-
-          g2.fill(new Ellipse2D.Double(-2,-1.5,4,4));
-    }
-
-      */
+     
       /**
        * Method changes the pixelsize of the animation to match the viewport size, effectively proportioning our resulting animation
        */
