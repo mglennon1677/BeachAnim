@@ -1,3 +1,13 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+#Default ignore files for vscode
+.vscode/
+.code-workspace
+#Default ingore files for IntelliJ
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
