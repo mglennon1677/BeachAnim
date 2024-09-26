@@ -55,19 +55,40 @@
             graphics.save();
             let ground = new Path2D();
             let water = new Path2D();
-            ground.moveTo(-10.0, 8.0);
-            ground.lineTo(10.0, 8.0);
+            ground.moveTo(-10.0, 6.0);
+            ground.lineTo(10.0, 6.0);
             ground.lineTo(10.0, -10.0);
             ground.lineTo(-10.0, -10.0);
             ground.closePath();
-            water.moveTo(-2.0, 8.0);
-            water.bezierCurveTo(3.5, 3.5, 4.0, 5.0, 6.0, 8.0);
+            water.moveTo(-4.0, 6.0);
+            water.bezierCurveTo(2.0, 3.0, 5.0, 3.0, 9.0, 6.0);
             water.closePath();
 
             graphics.fillStyle = 'rgb(7, 168, 26)';
             graphics.fill(ground);
             graphics.fillStyle = 'rgb(0, 0, 255)'; 
             graphics.fill(water);
+            graphics.restore();
+        }
+         
+        //seesaw
+        {
+        graphics.save();
+        seesaw();
+        //graphics.translate(5,10);
+        graphics.restore();
+        }
+        {
+            graphics.save();
+            graphics.fillStyle="rgb(204, 55 , 178)";
+            
+            bar();
+            graphics.restore();
+        }
+        {
+            graphics.save();
+            graphics.fillStyle="rgb(255, 255, 255)";
+            drawPerson();
             graphics.restore();
         }
 
@@ -90,6 +111,47 @@
         graphics.fillStyle = 'rgb(0, 0, 255)'; 
         graphics.fill(water);
     }
+    function seesaw(){
+        graphics.save();
+        graphics.fillStyle = "rgb(51, 102, 0)";
+        graphics.beginPath();
+        graphics.moveTo(0,2);
+        graphics.lineTo(-1,0);
+        graphics.lineTo(1,-0);
+        graphics.closePath();
+        graphics.fill();
+        graphics.restore();
+    }
+    function bar() {
+    graphics.save();                
+    
+    // Set the position for the bar
+    graphics.translate(0, 2); // Move the bar up
+
+    // Calculate the angle for rocking motion
+    let angle = Math.sin(frameNumber * 0.05) * 0.3; // Adjust multiplier for speed and angle
+    graphics.rotate(angle); // Rotate the bar
+
+    graphics.fillStyle = "rgb(204, 55, 178)";
+    graphics.fillRect(-2.5, -0.075, 5.0, 0.15); // Center the rectangle around (0, 2)
+
+    graphics.restore();
+}
+
+function drawPerson(){
+    graphics.save();
+    graphics.fillOval(-2,3,0.5,0.5);
+    graphics.beginPath();
+    graphics.moveTo(-2,3);
+    graphics.lineTo(-3,4);
+    graphics.closePath();
+    graphics.fill();
+    graphics.restore();
+}
+
+
+    
+    
 
         /**
         * Sets up a transformation in the graphics context so that the canvas will

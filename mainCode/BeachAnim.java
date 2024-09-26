@@ -117,13 +117,8 @@ public class BeachAnim extends JPanel {
         g2.translate(-2.5,-3.4); //Place in position
         drawPeopleOnSeesaw(g2);
         g2.setTransform(cs); //Reset transform
-
-
-
-
     }
-
-
+    
     //Draw Background
     private void drawBackground(Graphics2D g2){
         Path2D ground = new Path2D.Double();
@@ -243,7 +238,7 @@ public class BeachAnim extends JPanel {
     private void drawSeesaw(Graphics2D g2, double seatAngle){
         AffineTransform savedTransform = g2.getTransform();  // save the current transform
 
-        g2.rotate( seatAngle, 0, 1 );
+        //g2.rotate( seatAngle, 0, 1 );
         //Draw bar
         g2.setPaint(new Color(180, 0, 180) ); // dark magenta
         g2.setStroke(new BasicStroke(8*pixelSize));
