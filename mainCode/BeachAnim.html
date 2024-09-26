@@ -155,6 +155,120 @@
 
           graphics.restore();
         }
+        // Draw people on seesaw
+        drawPeopleOnSeesaw(graphics, frameNumber);
+        graphics.restore();
+        drawSun();
+      }
+
+      function drawPeopleOnSeesaw(graphics, frameNumber) {
+        graphics.save(); // Save the current context
+        const slowedFrameNumber = frameNumber * 0.1;
+
+        // Draw the seesaw with seat angle based on the frame number
+        drawSeesaw(graphics, Math.sin(slowedFrameNumber) / 3);
+
+        // Variables for left and right person
+        let leftPersonYAdjustment = -Math.sin(slowedFrameNumber) / 1.5;
+        let leftPersonKneeAngle = Math.sin(slowedFrameNumber) / 2 - 7.2;
+        let rightPersonYAdjustment = Math.sin(slowedFrameNumber) / 1.5;
+        let rightPersonKneeAngle = -(Math.sin(slowedFrameNumber) / 2) - 7.2;
+
+        // Draw the left person on the seesaw
+        graphics.save();
+        graphics.translate(-2.5, 1);
+        graphics.translate(0, leftPersonYAdjustment); // Adjust height for left person
+        drawPerson(graphics, leftPersonKneeAngle, true);
+        graphics.restore(); // Restore context after left person
+
+        // Draw the right person on the seesaw
+        graphics.save();
+        graphics.translate(2, 1);
+        graphics.translate(0, rightPersonYAdjustment); // Adjust height for right person
+        drawPerson(graphics, rightPersonKneeAngle, false);
+        graphics.restore(); // Restore context after right person
+      }
+
+      // Function to draw the seesaw
+      function drawSeesaw(graphics, seatAngle) {
+        graphics.save();
+
+        // Define the seesaw bar using Path2D
+        let seesawBar = new Path2D();
+        seesawBar.moveTo(-2.8, 0);
+        seesawBar.lineTo(2.4, 0);
+
+        // Set the pivot point and apply the rotation for the bar
+        graphics.translate(0, 1);
+        graphics.rotate(seatAngle);
+        graphics.strokeStyle = "rgb(180, 0, 180)"; // Dark magenta
+        graphics.lineWidth = 0.1;
+        graphics.stroke(seesawBar); // Draw the bar
+
+        graphics.restore(); // Reset transformation
+
+        let supportTriangle = new Path2D();
+        supportTriangle.moveTo(-0.7, 1);
+        supportTriangle.lineTo(0.7, 1);
+        supportTriangle.lineTo(0, 0);
+        supportTriangle.closePath();
+
+        graphics.save();
+        graphics.translate(0, 1); // Translate to the seesaw's base
+        graphics.rotate(Math.PI); // Rotate the triangle 180 degrees
+        graphics.fillStyle = "rgb(0, 60, 0)"; // Dark green color
+        graphics.fill(supportTriangle);
+        graphics.restore(); // Restore the context
+      }
+
+      // Function to draw a person
+      function drawPerson(graphics, kneeAngle, facingRight) {
+        graphics.save(); // Save the current context
+
+        if (!facingRight) {
+          graphics.scale(-1, 1); // Flip the drawing horizontally
+        }
+
+        // Head
+        let head = new Path2D();
+        head.arc(0, 2, 0.5, 0, 2 * Math.PI);
+        graphics.fillStyle = "white"; // Fill color
+        graphics.fill(head);
+        graphics.lineWidth = 0.08; // Outline thickness
+        graphics.strokeStyle = "black"; // Outline color
+        graphics.stroke(head);
+
+        // Torso
+        let torso = new Path2D();
+        torso.moveTo(0, 1.5);
+        torso.lineTo(0, -0.03);
+        graphics.stroke(torso);
+
+        // Hand
+        let hand = new Path2D();
+        hand.moveTo(0, 1.2);
+        hand.lineTo(1, 0.3);
+        graphics.stroke(hand);
+
+        // Upper Leg
+        let upperLeg = new Path2D();
+        graphics.rotate(kneeAngle); // Rotate for knee angle
+        upperLeg.moveTo(0, 0);
+        upperLeg.lineTo(0.5, 0);
+
+        graphics.stroke(upperLeg);
+
+        // Lower Leg
+        let lowerLeg = new Path2D();
+        graphics.translate(0.5, 0);
+        graphics.scale(-1, 1);
+        graphics.rotate(2 * kneeAngle);
+        graphics.translate(-0.5, 0);
+        lowerLeg.moveTo(0.5, 0);
+        lowerLeg.lineTo(1.0, 0);
+        graphics.stroke(lowerLeg);
+
+        graphics.restore(); // Restore the context state
       }
 
       function drawBackground() {
