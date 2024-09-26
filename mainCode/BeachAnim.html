@@ -1,164 +1,163 @@
-
 <!DOCTYPE html>
 <html>
-    <head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>BeachAnim</title>
     <style>
-        body {
-            background-color: #DDDDDD;
-        }
-        
-        canvas {
-            background-color: lightblue;
-            display: block;
-        }
+      body {
+        background-color: #dddddd;
+      }
 
-        #canvasholder {
-            border:2px solid black;
-            float: left;
-        }
+      canvas {
+        background-color: lightblue;
+        display: block;
+      }
+
+      #canvasholder {
+        border: 2px solid black;
+        float: left;
+      }
     </style>
     <script>
+      "use strict"; // gives improved error-checking in scripts.
 
-        "use strict";  // gives improved error-checking in scripts.
+      var canvas; // The canvas element on which we will draw.
+      var graphics; // A 2D graphics context for drawing on the canvas.
+      var pixelSize; // The size of a pixel in the coordinate system; set up by
+      //    applyWindowToViewportTransform function when it is called.
+      var frameNumber = 0; // Which frame we are on... Used in animation.
 
-        var canvas;    // The canvas element on which we will draw.
-        var graphics;  // A 2D graphics context for drawing on the canvas.
-        var pixelSize; // The size of a pixel in the coordinate system; set up by
-                    //    applyWindowToViewportTransform function when it is called.
-        var frameNumber = 0; // Which frame we are on... Used in animation.
-        
-        function draw() {
-            graphics.clearRect(0,0,1000,1000);  // Clear the canvas, so it shows its background color.
-            graphics.save();  // Push graphics context state onto a stack.
+      function draw() {
+        graphics.clearRect(0, 0, 1000, 1000); // Clear the canvas, so it shows its background color.
+        graphics.save(); // Push graphics context state onto a stack.
 
-            applyWindowToViewportTransformation(-5,10,-1,14,true);
+        applyWindowToViewportTransformation(-5, 10, -1, 14, true);
 
-            drawScene();
-            
-            graphics.restore();  // Pop the saved graphics context state.   DO NOT FORGET THIS STEP!!!
-        }
-        
-    function drawScene() {
-        graphics.save();  // Save the CS so it can be restored later.
+        drawScene();
 
-        graphics.scale(1,1);
+        graphics.restore(); // Pop the saved graphics context state.   DO NOT FORGET THIS STEP!!!
+      }
+
+      function drawScene() {
+        graphics.save(); // Save the CS so it can be restored later.
+
+        graphics.scale(1, 1);
         drawMainScene();
-        
-        graphics.restore();
-    }
 
-    function drawMainScene() {
+        graphics.restore();
+      }
+
+      function drawMainScene() {
         // The environment
         {
-            graphics.save();
-            let ground = new Path2D();
-            let water = new Path2D();
-            ground.moveTo(-10.0, 8.0);
-            ground.lineTo(10.0, 8.0);
-            ground.lineTo(10.0, -10.0);
-            ground.lineTo(-10.0, -10.0);
-            ground.closePath();
-            water.moveTo(-2.0, 8.0);
-            water.bezierCurveTo(3.5, 3.5, 4.0, 5.0, 6.0, 8.0);
-            water.closePath();
-            graphics.fillStyle = 'rgb(7, 168, 26)';
-            graphics.fill(ground);
-            graphics.fillStyle = 'rgb(0, 0, 255)'; 
-            graphics.fill(water);
-            graphics.restore();
+          graphics.save();
+          let ground = new Path2D();
+          let water = new Path2D();
+          ground.moveTo(-10.0, 8.0);
+          ground.lineTo(10.0, 8.0);
+          ground.lineTo(10.0, -10.0);
+          ground.lineTo(-10.0, -10.0);
+          ground.closePath();
+          water.moveTo(-2.0, 8.0);
+          water.bezierCurveTo(3.5, 3.5, 4.0, 5.0, 6.0, 8.0);
+          water.closePath();
+
+          graphics.fillStyle = "rgb(7, 168, 26)";
+          graphics.fill(ground);
+          graphics.fillStyle = "rgb(0, 0, 255)";
+          graphics.fill(water);
+          graphics.restore();
         }
 
         //blanket and items
         {
-            graphics.save();
-            let blanket = new Path2D;
-            let ball = new Path2D;
-            let briefcaseBase = new Path2D;
-            let briefcaseHandle = new Path2D;
+          graphics.save();
+          let blanket = new Path2D();
+          let ball = new Path2D();
+          let briefcaseBase = new Path2D();
+          let briefcaseHandle = new Path2D();
 
-            blanket.moveTo(3.5, 4.5); //bottom left corner
-            blanket.lineTo(5.5, 4.5); //bottom right corner
-            blanket.lineTo(7.5, 6.0); //upper right corner
-            blanket.lineTo(5.5, 6.0) //upper left corner
-            blanket.closePath();
+          blanket.moveTo(3.5, 4.5); //bottom left corner
+          blanket.lineTo(5.5, 4.5); //bottom right corner
+          blanket.lineTo(7.5, 6.0); //upper right corner
+          blanket.lineTo(5.5, 6.0); //upper left corner
+          blanket.closePath();
 
-            ball.arc(5.4 ,5.6, 0.05, 0, 2 * Math.PI);
-            ball.closePath();
+          ball.arc(5.4, 5.6, 0.05, 0, 2 * Math.PI);
+          ball.closePath();
 
-            briefcaseBase.rect(6.3, 5.8, 0.7, 0.4);
-            briefcaseBase.closePath();
+          briefcaseBase.rect(6.3, 5.8, 0.7, 0.4);
+          briefcaseBase.closePath();
 
-            briefcaseHandle.moveTo(6.35, 6);
-            briefcaseHandle.quadraticCurveTo(6.65, 6.75, 6.9, 6.0);
+          briefcaseHandle.moveTo(6.35, 6);
+          briefcaseHandle.quadraticCurveTo(6.65, 6.75, 6.9, 6.0);
 
-            //blanket coloring 
-            graphics.fillStyle = 'rgb(216, 184, 152)';
-            graphics.fill(blanket);
+          //blanket coloring
+          graphics.fillStyle = "rgb(216, 184, 152)";
+          graphics.fill(blanket);
 
-            //ball coloring
-            graphics.fillStyle = 'rgb(255, 0, 0)';
-            graphics.fill(ball);
+          //ball coloring
+          graphics.fillStyle = "rgb(255, 0, 0)";
+          graphics.fill(ball);
 
-            //briefcase coloring
-            graphics.fillStyle = 'rgb(65,60,50)';
-            graphics.fill(briefcaseBase);
+          //briefcase coloring
+          graphics.fillStyle = "rgb(65,60,50)";
+          graphics.fill(briefcaseBase);
 
-            //briefcase handle
-            graphics.strokeStyle = 'rgb(65,60,50)';
-            graphics.lineWidth = 0.08;
-            graphics.stroke(briefcaseHandle);
+          //briefcase handle
+          graphics.strokeStyle = "rgb(65,60,50)";
+          graphics.lineWidth = 0.08;
+          graphics.stroke(briefcaseHandle);
 
-            graphics.restore();
+          graphics.restore();
         }
 
         //guy on blanket
         {
-            graphics.save();
-            let head = new Path2D();
-            let torso = new Path2D();
-            let hand = new Path2D();
-            let upperLeg = new Path2D();
-            let lowerLeg = new Path2D();
+          graphics.save();
+          let head = new Path2D();
+          let torso = new Path2D();
+          let hand = new Path2D();
+          let upperLeg = new Path2D();
+          let lowerLeg = new Path2D();
 
-            head.arc(5.93, 5.5, 0.2, 0, 2 * Math.PI);
+          head.arc(5.93, 5.5, 0.2, 0, 2 * Math.PI);
 
-            torso.moveTo(5.77, 5.35); //near head
-            torso.lineTo(5.3, 5.05); //away from head
+          torso.moveTo(5.77, 5.35); //near head
+          torso.lineTo(5.3, 5.05); //away from head
 
-            hand.moveTo(5.68, 5.3); //on torso
-            hand.lineTo(5.3, 5.27); //off torso
+          hand.moveTo(5.68, 5.3); //on torso
+          hand.lineTo(5.3, 5.27); //off torso
 
-            upperLeg.moveTo(5.3, 5.05); //bottom of torso
-            upperLeg.lineTo(5.0, 5.02); // off torso
+          upperLeg.moveTo(5.3, 5.05); //bottom of torso
+          upperLeg.lineTo(5.0, 5.02); // off torso
 
-            lowerLeg.moveTo(5.0, 5.02);
-            lowerLeg.lineTo(5.05, 4.8);
-            
-            //coloring the head
-            graphics.strokeStyle = 'rgb(0, 0, 0)';
-            graphics.lineWidth = 0.08;
-            graphics.stroke(head);
-            graphics.fillStyle = 'rgb(255, 255, 255)';
-            graphics.fill(head);
+          lowerLeg.moveTo(5.0, 5.02);
+          lowerLeg.lineTo(5.05, 4.8);
 
-            //coloring torso
-            graphics.lineWidth = 0.04;
-            graphics.stroke(torso);
+          //coloring the head
+          graphics.strokeStyle = "rgb(0, 0, 0)";
+          graphics.lineWidth = 0.08;
+          graphics.stroke(head);
+          graphics.fillStyle = "rgb(255, 255, 255)";
+          graphics.fill(head);
 
-            //coloring hand
-            graphics.stroke(hand);
+          //coloring torso
+          graphics.lineWidth = 0.04;
+          graphics.stroke(torso);
 
-            //coloring legs
-            graphics.stroke(upperLeg);
-            graphics.stroke(lowerLeg);
+          //coloring hand
+          graphics.stroke(hand);
 
-            graphics.restore();
+          //coloring legs
+          graphics.stroke(upperLeg);
+          graphics.stroke(lowerLeg);
+
+          graphics.restore();
         }
-    }
+      }
 
-    function drawBackground() {
+      function drawBackground() {
         let ground = new Path2D();
         let water = new Path2D();
         ground.moveTo(-10.0, 3.0);
@@ -170,165 +169,194 @@
         water.bezierCurveTo(-0.5, 0.0, 0.0, -3.0, 5.0, 3.0);
         water.closePath();
 
-        graphics.fillStyle = 'rgb(7, 168, 26)';
+        graphics.fillStyle = "rgb(7, 168, 26)";
         graphics.fill(ground);
-        graphics.fillStyle = 'rgb(0, 0, 255)'; 
+        graphics.fillStyle = "rgb(0, 0, 255)";
         graphics.fill(water);
-    }
+      }
 
-        /**
-        * Sets up a transformation in the graphics context so that the canvas will
-        * show x-values in the range from left to right, and y-values in the range
-        * from bottom to top.  If preserveAspect is true, then one of the ranges
-        * will be increased, if necessary, to account for the aspect ratio of the
-        * canvas.  This function sets the global variable pixelsize to be the
-        * size of a pixel in the new coordinate system.  (If preseverAspect is
-        * true, pixelSize is the maximum of its horizontal and vertical sizes.)
-        */
-        function applyWindowToViewportTransformation(left,right,bottom,top,preserveAspect) {
-            var displayAspect, windowAspect;
-            var excess;
-            var pixelwidth, pixelheight;
-            if (preserveAspect) {
-                // Adjust the limits to match the aspect ratio of the drawing area.
-                displayAspect = Math.abs(canvas.height / canvas.width);
-                windowAspect = Math.abs(( top-bottom ) / ( right-left ));
-                if (displayAspect > windowAspect) {
-                    // Expand the viewport vertically.
-                    excess = (top-bottom) * (displayAspect/windowAspect - 1)
-                    top = top + excess/2
-                    bottom = bottom - excess/2
-                }
-                else if (displayAspect < windowAspect) {
-                    // Expand the viewport vertically.
-                    excess = (right-left) * (windowAspect/displayAspect - 1)
-                    right = right + excess/2
-                    left = left - excess/2	
-                }
-            }
-            graphics.scale( canvas.width / (right-left), canvas.height / (bottom-top) )
-            graphics.translate( -left, -top );
-            pixelwidth =  Math.abs(( right - left ) / canvas.width);
-            pixelheight = Math.abs(( bottom - top ) / canvas.height);
-            pixelSize = Math.max(pixelwidth,pixelheight);
-        }  // end of applyWindowToViewportTransformation()
+      function drawSun() {
+        graphics.fillStyle = "rgba(255, 255, 0, 0.2)";
 
-        function addGraphicsContextExtras(graphics) {
-            graphics.strokeLine = function(x1,y1,x2,y2) {
-            this.beginPath();
-            this.moveTo(x1,y1);
-            this.lineTo(x2,y2);
-            this.stroke();
-            }
-            graphics.fillCircle = function(x,y,r) {
-            this.beginPath();
-            this.arc(x,y,r,0,2*Math.PI,false);
-            this.fill();
-            }
-            graphics.strokeCircle = function(x,y,radius) {
-            this.beginPath();
-            this.arc(x,y,radius,0,2*Math.PI,false);
-            this.stroke();
-            }
-            graphics.fillPoly = function() { 
-                if (arguments.length < 6)
-                return;
-                this.beginPath();
-                this.moveTo(arguments[0],arguments[1]);
-                for (var i = 2; i+1 < arguments.length; i = i + 2) { 
-                this.lineTo(arguments[i],arguments[i+1]);
-                }
-                this.closePath();
-                this.fill();
-            }
-            graphics.strokePoly = function() { 
-                if (arguments.length < 4)
-                return;
-                this.beginPath();
-                this.moveTo(arguments[0],arguments[1]);
-                for (var i = 2; i+1 < arguments.length; i = i + 2) { 
-                this.lineTo(arguments[i],arguments[i+1]);
-                }
-                this.closePath();
-                this.stroke();
-            }
-            graphics.fillOval = function(x,y,horizontalRadius,verticalRadius) {
-            this.save();
-            this.translate(x,y);
-            this.scale(horizontalRadius,verticalRadius);
-            this.beginPath();
-            this.arc(0,0,1,0,2*Math.PI,false);
-            this.restore();
-            this.fill();
-            }
-            graphics.strokeOval = function(x,y,horizontalRadius,verticalRadius) {
-            this.save();
-            this.translate(x,y);
-            this.scale(horizontalRadius,verticalRadius);
-            this.beginPath();
-            this.arc(0,0,1,0,2*Math.PI,false);
-            this.restore();
-            this.stroke();
-            }
-            graphics.getRGB = function(x,y) {
-                var color = this.getImageData(x,y,1,1);
-                return color.data;
-            }
-        }    // end of addGraphicsContextExtras()
+        let radial = Math.sin(frameNumber * 0.04);
 
-        /**
-        *  Draw one frame of the animation, and call requestAnimationFrame() to arrange
-        *  for the function to be called again.
-        */
-        function doFrame() {
-            frameNumber++;
-            // YOU CAN ADD UPDATE OTHER DATA FOR THE FRAME HERE.
-            draw();
-            requestAnimationFrame(doFrame);
+        for (let i = 0; i < 5; i++) {
+          let x = 7 + 0.2 - 0.04 * radial;
+          let y = 11 + 0.2 - 0.04 * radial;
+          let width = 4 - i * 0.4 + 0.08 * radial;
+          let height = 4 - i * 0.4 + 0.08 * radial;
+
+          graphics.beginPath();
+          graphics.ellipse(x, y, width / 2, height / 2, 0, 0, 2 * Math.PI);
+          graphics.fill();
         }
-    
-        /**
-        * The init() funciton is called after the page has been
-        * loaded.  It initializes the canvas and graphics variables.
-        * It calles addGraphicsContextExtras(graphics) to add the extra
-        * drawing functions to the graphics context, and it calls draw()
-        * to draw on the canvas.
-        */
-        function init() {
-            try {
-                canvas = document.getElementById("canvas");
-                graphics = canvas.getContext("2d");
-            } catch(e) {
-                document.getElementById("canvasholder").innerHTML =
-                "Canvas graphics is not supported.<br>" +
-                "An error occurred while initializing graphics.";
-            }
-            addGraphicsContextExtras(graphics);  // Add the extra features to the graphics context
-            draw();  // Call draw() to draw on the canvas.
-            if (!window.requestAnimationFrame) { // This is for Internet Explorer 9
-                window.requestAnimationFrame = function(callback) {
-                    setTimeout(callback, 1000/60);    
-                }
-            }
-            requestAnimationFrame(doFrame);
+      }
+
+      /**
+       * Sets up a transformation in the graphics context so that the canvas will
+       * show x-values in the range from left to right, and y-values in the range
+       * from bottom to top.  If preserveAspect is true, then one of the ranges
+       * will be increased, if necessary, to account for the aspect ratio of the
+       * canvas.  This function sets the global variable pixelsize to be the
+       * size of a pixel in the new coordinate system.  (If preseverAspect is
+       * true, pixelSize is the maximum of its horizontal and vertical sizes.)
+       */
+      function applyWindowToViewportTransformation(
+        left,
+        right,
+        bottom,
+        top,
+        preserveAspect
+      ) {
+        var displayAspect, windowAspect;
+        var excess;
+        var pixelwidth, pixelheight;
+        if (preserveAspect) {
+          // Adjust the limits to match the aspect ratio of the drawing area.
+          displayAspect = Math.abs(canvas.height / canvas.width);
+          windowAspect = Math.abs((top - bottom) / (right - left));
+          if (displayAspect > windowAspect) {
+            // Expand the viewport vertically.
+            excess = (top - bottom) * (displayAspect / windowAspect - 1);
+            top = top + excess / 2;
+            bottom = bottom - excess / 2;
+          } else if (displayAspect < windowAspect) {
+            // Expand the viewport vertically.
+            excess = (right - left) * (windowAspect / displayAspect - 1);
+            right = right + excess / 2;
+            left = left - excess / 2;
+          }
         }
+        graphics.scale(
+          canvas.width / (right - left),
+          canvas.height / (bottom - top)
+        );
+        graphics.translate(-left, -top);
+        pixelwidth = Math.abs((right - left) / canvas.width);
+        pixelheight = Math.abs((bottom - top) / canvas.height);
+        pixelSize = Math.max(pixelwidth, pixelheight);
+      } // end of applyWindowToViewportTransformation()
+
+      function addGraphicsContextExtras(graphics) {
+        graphics.strokeLine = function (x1, y1, x2, y2) {
+          this.beginPath();
+          this.moveTo(x1, y1);
+          this.lineTo(x2, y2);
+          this.stroke();
+        };
+        graphics.fillCircle = function (x, y, r) {
+          this.beginPath();
+          this.arc(x, y, r, 0, 2 * Math.PI, false);
+          this.fill();
+        };
+        graphics.strokeCircle = function (x, y, radius) {
+          this.beginPath();
+          this.arc(x, y, radius, 0, 2 * Math.PI, false);
+          this.stroke();
+        };
+        graphics.fillPoly = function () {
+          if (arguments.length < 6) return;
+          this.beginPath();
+          this.moveTo(arguments[0], arguments[1]);
+          for (var i = 2; i + 1 < arguments.length; i = i + 2) {
+            this.lineTo(arguments[i], arguments[i + 1]);
+          }
+          this.closePath();
+          this.fill();
+        };
+        graphics.strokePoly = function () {
+          if (arguments.length < 4) return;
+          this.beginPath();
+          this.moveTo(arguments[0], arguments[1]);
+          for (var i = 2; i + 1 < arguments.length; i = i + 2) {
+            this.lineTo(arguments[i], arguments[i + 1]);
+          }
+          this.closePath();
+          this.stroke();
+        };
+        graphics.fillOval = function (x, y, horizontalRadius, verticalRadius) {
+          this.save();
+          this.translate(x, y);
+          this.scale(horizontalRadius, verticalRadius);
+          this.beginPath();
+          this.arc(0, 0, 1, 0, 2 * Math.PI, false);
+          this.restore();
+          this.fill();
+        };
+        graphics.strokeOval = function (
+          x,
+          y,
+          horizontalRadius,
+          verticalRadius
+        ) {
+          this.save();
+          this.translate(x, y);
+          this.scale(horizontalRadius, verticalRadius);
+          this.beginPath();
+          this.arc(0, 0, 1, 0, 2 * Math.PI, false);
+          this.restore();
+          this.stroke();
+        };
+        graphics.getRGB = function (x, y) {
+          var color = this.getImageData(x, y, 1, 1);
+          return color.data;
+        };
+      } // end of addGraphicsContextExtras()
+
+      /**
+       *  Draw one frame of the animation, and call requestAnimationFrame() to arrange
+       *  for the function to be called again.
+       */
+      function doFrame() {
+        frameNumber++;
+        // YOU CAN ADD UPDATE OTHER DATA FOR THE FRAME HERE.
+        draw();
+        requestAnimationFrame(doFrame);
+      }
+
+      /**
+       * The init() funciton is called after the page has been
+       * loaded.  It initializes the canvas and graphics variables.
+       * It calles addGraphicsContextExtras(graphics) to add the extra
+       * drawing functions to the graphics context, and it calls draw()
+       * to draw on the canvas.
+       */
+      function init() {
+        try {
+          canvas = document.getElementById("canvas");
+          graphics = canvas.getContext("2d");
+        } catch (e) {
+          document.getElementById("canvasholder").innerHTML =
+            "Canvas graphics is not supported.<br>" +
+            "An error occurred while initializing graphics.";
+        }
+        addGraphicsContextExtras(graphics); // Add the extra features to the graphics context
+        draw(); // Call draw() to draw on the canvas.
+        if (!window.requestAnimationFrame) {
+          // This is for Internet Explorer 9
+          window.requestAnimationFrame = function (callback) {
+            setTimeout(callback, 1000 / 60);
+          };
+        }
+        requestAnimationFrame(doFrame);
+      }
     </script>
-    </head>
-    <body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+  </head>
+  <body onload="init()">
+    <!-- the onload attribute here is what calls the init() function -->
 
-        <h2>Beach Animation</h2>
+    <h2>Beach Animation</h2>
 
-        <noscript>
-            <!-- This message will be shown in the page if JavaScript is not available. -->
-        <p>JavaScript is required to use this page.</p>
-        </noscript>
+    <noscript>
+      <!-- This message will be shown in the page if JavaScript is not available. -->
+      <p>JavaScript is required to use this page.</p>
+    </noscript>
 
-        <div id="canvasholder">
-        <canvas id="canvas" width="1000" height="1000">
-            <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
+    <div id="canvasholder">
+      <canvas id="canvas" width="1000" height="1000">
+        <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
         Canvas not supported.
-        </canvas>
+      </canvas>
     </div>
-
-    </body>
+  </body>
 </html>
