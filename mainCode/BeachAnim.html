@@ -48,7 +48,41 @@
         
         graphics.restore();
     }
+    function drawTree(x, y, trunkWidth, trunkHeight, foliageRadius) {
+    graphics.save();
 
+    // Draw the curved and lopsided tree trunk using Path2D
+    let trunk = new Path2D();
+    
+    // Begin path for trunk, adapting the Java code logic
+    trunk.moveTo(x - 1, y + 4);                            // Start at base left
+    trunk.bezierCurveTo(                                   // Left side curve of the trunk
+        x , y + 4,
+        x + 0.3, y + 0.3,
+        x - 2, y - 2
+    );
+    trunk.lineTo(x - 0.5, y - 1.3);                        // Root spike left
+    trunk.lineTo(x + 0.6, y - 2.8);                        // Middle spike
+    trunk.lineTo(x + 1, y - 1.4);                          // Root spike right
+    trunk.lineTo(x + 2, y - 2);                          // Right side curve of trunk
+    trunk.bezierCurveTo(                                   // Right side curve of the trunk
+        x + 2, y - 2,
+        x + 0.3, y + 0.3,
+        x + 1, y + 4
+    );
+
+    // Set dark brown color and fill the trunk
+    graphics.fillStyle = 'rgb(80, 35, 0)';
+    graphics.fill(trunk);
+
+    // Draw tree foliage (ellipse) - dark green
+    graphics.fillStyle = 'rgb(0, 90, 0)';
+    graphics.beginPath();
+    graphics.ellipse(x+0.3, y + 3, foliageRadius * 3, foliageRadius * 3, 0, 0, Math.PI * 2); // Elliptical foliage
+    graphics.fill();
+
+    graphics.restore();
+}
     function drawMainScene() {
         // The environment
         {
@@ -70,7 +104,14 @@
             graphics.fill(water);
             graphics.restore();
         }
-         
+        //trees
+        {
+            graphics.save();
+            //graphics.fillStyle="rgb(0, 102, 0)";
+            drawTree(-2.5, 3, 2, 3, 0.6);  // Tree on the left
+            drawTree(7, 3, 2, 4, 0.6);   // Tree on the right
+            graphics.restore();
+        }
         //seesaw
         {
         graphics.save();
